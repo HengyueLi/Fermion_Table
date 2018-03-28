@@ -31,16 +31,21 @@
 ! avalable gets:
 !                  [fun] get_ns():
 !                        integer::get_ns
+!
 !                  [fun] get_symmetry()
 !                        integer::get_symmetry
+!
 !                  [fun] get_nsub():
 !                                   integer::get_nsub the number of subspaces.
+!
 !                  [fun] get_sub_d(i):
 !                                   integer::get_sub_d,i
 !                                   return the dimension of the i-th subspace.
+!
 !                  [fun] get_basis_to_sub_index(basis):
 !                                   integer::get_basis_to_sub_index
 !                                   integer*8::basis
+!
 !                  [fun] get_subid_from_basis(basis):
 !                                   return integer
 !                                   integer*8::basis
@@ -49,8 +54,9 @@
 !                                   integer::subid,index
 !                  [fun] get_subspace_marker(subid):
 !                                   character(32)::get_subspace_marker    description of the subspace
-!                  [sub] get_sub_mark_value(subid,returnv):
-!                                   integer::returnv(2)
+!
+!                  [sub] get_sub_mark_value(subid,res):
+!                                   integer::res(2)
 !                                   for (Nup,Ndown) case , return (nup,ndown)
 !                                   for (N) case, return (N, -1)
 !                                   for other case , return (-1,-1)
@@ -354,12 +360,12 @@ end subroutine
               get_basis_to_sub_index = self%TS(basis)
    end function
    !
-   integer*8 function  get_subindex_to_basis(self,subid,jci)
+   integer*8 function  get_subindex_to_basis(self,subid,index)
               implicit none
               class(table),intent(inout)::self
-              integer,intent(in)::subid,jci
+              integer,intent(in)::subid,index
               !-----------------------------------------
-              get_subindex_to_basis = self%st(subid)%bais(jci)
+              get_subindex_to_basis = self%st(subid)%bais(index)
    end function
 
    integer function get_subid_from_basis(self,basis)

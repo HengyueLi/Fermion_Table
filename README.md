@@ -24,3 +24,56 @@ As we have shown, we can simplify H when [H,n] = 0. In some system we can even h
 * symmetry = 2 : [H,n] = 0 and [H,S<sub>z</sub>]=0
 
 By using this module, it becomes very easy to change the case(symmetry) without changing other interface. When some "bad term" which breaks down the symmetry of H is added to H, we need not to range the basis again. One need only to decrease the value of symmetry.
+
+## A simple example of usage:
+
+    program main
+      use fermion_table
+      implicit none
+
+      type(table)::t
+      integer::m(2)
+      integer*8::psi
+
+      !   Initialization.   This example shows a system with 3 site and  symmetry = 2
+      call t%Initialization(ns = 3 ,  symmetry = 2 )
+
+
+
+      ! show how many subspace are there
+      write(*,*)"The number of subspace is:" , t%get_nsub()
+
+      ! show some information of subspace id = 5 for example
+      ! The subspace is marked by ( nup =1 , ndown = 1 )
+      write(*,*)t%get_subspace_marker(subid=6)
+
+
+
+
+      ! We can use a integer::marker(2) to mark the different subspace
+      ! if symmtry = 0 , there is only one subspace. So marker is useless
+      ! if symmtry = 1 , marker(1) reperent the total particle marker(2) is not used.
+      ! if symmtry = 2 , the two value of marker will represent number of particle that spin up and down respectivily.
+      call t%get_sub_mark_value( subid = 6 , res = m )
+       write(*,*)"the marker value of subspace id = 6:",  m
+
+
+       ! For a working basis corresponding to the 4-th state in subid = 6
+       psi = t%get_subindex_to_basis(subid=6,index=4)
+       write(*,*)"The 4-th state in subspace6 is:",psi
+
+
+       ! We then try to do the inverse thing. For a given basis psi = 17, we check it id in subspace
+       write(*,*)"The subspace index is:",t%get_subid_from_basis(basis=17_8)
+       ! This function, in fact, is not so usefull in practice. The most import infor is the index of
+       ! of this basis in the subspace, which is shown below
+       write(*,*)"The order of psi=17 in the subspace is: ",t%get_basis_to_sub_index(basis=17_8)
+
+
+       ! some other usefull function can be found in source code directly.
+       ! This module should contains all the requirments to built a higher level package.
+       ! One should not confuse about that some functions can not be found in this module.
+       ! If you really think so, the function you really want, in fact, is not needed at all!
+
+
+    end
